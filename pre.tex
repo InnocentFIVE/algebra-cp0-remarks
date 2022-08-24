@@ -1,0 +1,194 @@
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{tabularray}
+\usepackage{unicode-math}
+\usepackage{ctex}
+\usepackage{calc}
+\usepackage{lipsum}
+\usepackage{color,calc}
+\usepackage{ninecolors}
+\usepackage{tikz}
+\usepackage{wallpaper}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{fontspec}
+\usepackage{mathtools}
+\usepackage{mleftright}
+\usepackage{amsthm}
+\usepackage{pxrubrica}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usetikzlibrary{patterns}
+\usetikzlibrary{arrows.meta}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+\tcbuselibrary{theorems}
+\tcbuselibrary{most}
+\let\left\mleft
+\let\right\mright
+\setcounter{tocdepth}{5}
+\setsansfont{Noto Sans}
+
+\makeatletter
+\newCJKfontfamily\NotoSerifCJKJP{Noto Serif CJK JP}
+\renewcommand{\cftchapteraftersnumb}{\hfill}
+\renewcommand{\cftchapterfont}{\sffamily\large\bfseries}
+\renewcommand{\cftchaptername}{{\scshape\large\chaptername}~}
+\renewcommand{\cftchapterafterpnum}{\hspace*{-0.45ex}\par\vspace*{1em}}
+\renewcommand{\cftchapterformatpnum}{\sffamily\large\bfseries\color{white}\colorbox{ChapBlue}}
+\renewcommand*{\chapternumberline}[1]{\hspace*{-3em}\colorbox{ChapBlue}{\color{white}\cftchaptername #1}\cftchapteraftersnum\hfill\itshape\scshape\LARGE}
+
+\renewcommand*{\cftsectionleader}{~\color{ChapBlue}\sffamily\small}
+\renewcommand{\cftsectionfont}{\sffamily\scshape\small\bfseries}
+\renewcommand{\cftsectionname}{{\small\bfseries\color{ChapBlue} \S}\space}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\renewcommand*{\cftsectionformatpnum}[1]{\sffamily\small{\color{ChapBlue}\titlerule*[0.2pc]{\(\cdot\)}}~~\textit{#1}}
+
+\renewcommand*{\cftsubsectionleader}{~\color{ChapBlue!20!white}\sffamily \(\longmapsto\kern-0.8em{\color{white}\special{pdf:literal direct 2 Tr 0.3 w }∎\special{pdf:literal direct 0 Tr 0 w }}\)\kern-1.5em\titlerule*[0.1pc]{\(-\)}\(\!\!\!\longrightarrow\)}
+\renewcommand{\cftsubsectionfont}{\footnotesize\slshape}
+\renewcommand*{\cftsubsectionformatpnum}{~~\itshape\footnotesize\color{ChapBlue}}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip\hspace*{2em}\par}
+
+\renewenvironment{cases}[1]{\begin{dcases}#1}{\end{dcases}}
+
+\newenvironment{thoerem}[2]{\begin{theo}{#1}{}\trivlist\item #2}{\end{theo}}
+
+\newtcbtheorem[number within=section]{prof}{PROOF}{colback=ChapBlue!20,colframe=ChapBlue!150,fonttitle=\bfseries,arc=0mm,leftrule=0mm,toprule=0mm,bottomrule=1mm,rightrule=0mm,breakable}{prof}
+
+\newtcbtheorem[number within=section]{theo}{THEOREM}{enhanced,title=My title,
+    attach boxed title to top center=
+        {yshift=-0.25mm-\tcboxedtitleheight/2,yshifttext=2mm-\tcboxedtitleheight/2},
+    boxed title style={boxrule=0.5mm,
+            frame code={ \path[tcb fill frame] ([xshift=-4mm]frame.west)
+                    -- (frame.north west) -- (frame.north east) -- ([xshift=4mm]frame.east)
+                    -- (frame.south east) -- (frame.south west) -- cycle; },
+            interior code={ \path[tcb fill interior] ([xshift=-2mm]interior.west)
+                    -- (interior.north west) -- (interior.north east)
+                    -- ([xshift=2mm]interior.east) -- (interior.south east) -- (interior.south west)
+                    -- cycle;}
+        }, colback = ChapBlue!10!white, colframe = ChapBlue!50!black, sharp corners, colbacktitle = ChapBlue,fonttitle=\bfseries,coltitle=white}{theo}
+
+
+\renewenvironment{quote}[2]{\begin{tcolorbox}[empty,
+            coltitle=ChapBlue!75!black,fonttitle=\bfseries,
+            borderline south={0.5mm}{0pt}{ChapBlue!50!white},
+            title = {#1},
+            titlerule style={ChapBlue,
+                    arrows = {|-|}},
+            leftrule = 0pt,
+            rightrule = 0pt, breakable,
+            colupper = darkgray
+            ]\slshape\small\color{darkgray} #2}{\end{tcolorbox}}
+\newfontface\ebgaramond{EB Garamond}
+\usepackage[top=1.25in,bottom=1.3in,outer=1.3in,inner=1.3in]{geometry}
+\newsavebox{\ChpNumBox}
+\definecolor{ChapBlue}{rgb}{0.00,0.65,0.65}
+\setmonofont{Iosevka}
+\setCJKmainfont{Noto Serif CJK SC}[ItalicFont = FZKaiS-Extended]
+\setCJKsansfont{Noto Sans CJK SC}[ItalicFont = FZKaiS-Extended]
+
+
+\renewenvironment{proof}[2]{\begin{prof}{#1}{}\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item #2}{\popQED\endtrivlist\@endpefalse\end{prof}}
+\providecommand{\xlongequal}[2][]{\ext@arrow 0099{\arrowfill@===}{#1}{#2}}
+% \titleformat{\section}[display]
+% {\vspace*{-3ex}}{\filright
+%     \begin{tblr}{colspec = {c}, rows = {abovesep = 3pt,belowsep = -1pt}}
+%         \SetCell{bg = ChapBlue!50!white, fg = ChapBlue!80!black}{\bfseries\LARGE\arabic{chapter}.\arabic{section}} \\
+%         \vspace*{-2ex}\!\scshape\textit{Section}\!
+%     \end{tblr}
+%     \setcounter{subsection}{0}
+%     \color{ChapBlue!70!black}\special{pdf:literal direct 2 Tr 0.5 w }\Large\(\longmapsto\kern-0.8em{\color{white}\special{pdf:literal direct 2 Tr 0.7 w }∎}\special{pdf:literal direct 2 Tr 0.5 w }\)\kern-1.5em\titlerule*[0.1pc]{\(-\)}\(\!\!\!\longrightarrow\)\special{pdf:literal direct 0 Tr 0 w }}{1em}{\vspace*{-5ex}\Large\bfseries\rightline}[\vspace{-3ex}]
+
+\titleformat{\section}[hang]
+{\vspace*{-3ex}}{\begin{tblr}{colspec = {c}, rows = {abovesep = 3pt,belowsep = -1pt}, row{2} = {abovesep = -5pt},baseline = T}
+            \SetCell{bg = ChapBlue!50!white, fg = ChapBlue!80!black}{\bfseries\LARGE\arabic{chapter}.\arabic{section}} \\
+            \makebox[0pt][c]{\scshape\textit{Section}}
+        \end{tblr}}{1em}{\color{ChapBlue!70!black}\special{pdf:literal direct 2 Tr 0.5 w}\LARGE\(\longmapsto\kern-0.8em{\color{white}\special{pdf:literal direct 2 Tr 0.9 w}∎}\special{pdf:literal direct 2 Tr 0.5 w}\)\kern-1.5em\titlerule*[0.1pc]{\(-\)}\(\!\!\!\longrightarrow\)\special{pdf:literal direct 0 Tr 0 w}~~\color{black}\Large\bfseries}[]
+
+\newcommand{\abstractIN}{}
+
+\newcommand{\newchap}[3]{
+    \renewcommand{\abstractIN}{#3}
+    \chapter[#1]{#2}\mbox{}\par
+    \thispagestyle{forchapter}
+    \setcounter{subsection}{0}
+    \enlargethispage{-0.7in}
+}
+
+
+
+\titleformat{\subsection}[display]
+{\vspace*{-1ex}}{}{}{\colorbox{ChapBlue!20!white}{\color{ChapBlue!90!black}\vspace{-3ex}\stepcounter{subsection}\large\bfseries\bfseries\thechapter.\arabic{section}.\arabic{subsection}}\hspace*{1em}\bfseries}
+
+
+\makepagestyle{tocf}
+\makeevenfoot{tocf}{}{\vskip5ex\colorbox{white}{\color{ChapBlue}~\bfseries\Roman{page}~}}{}
+\makeoddfoot{tocf}{}{\vskip5ex\colorbox{white}{\color{ChapBlue}~\bfseries\Roman{page}~}}{}
+\makeevenhead{tocf}{}{\ThisTileWallPaper{\paperwidth}{\paperheight}{tocOUT.pdf}}{}
+\makeoddhead{tocf}{}{\ThisTileWallPaper{\paperwidth}{\paperheight}{tocIN.pdf}}{}
+\makefootrule{tocf}{\textwidth}{2pt}{-9.6ex}
+\makeheadfootruleprefix{tocf}{}{\color{ChapBlue}}
+
+\makepagestyle{toc}
+\makeheadrule{toc}{\textwidth}{0.4pt}
+\makeevenfoot{toc}{}{\vskip5ex\colorbox{white}{\color{ChapBlue}~\bfseries\Roman{page}~}}{}
+\makeoddfoot{toc}{}{\vskip5ex\colorbox{white}{\color{ChapBlue}~\bfseries\Roman{page}~}}{}
+\makeoddhead{toc}{\ThisTileWallPaper{\paperwidth}{\paperheight}{tocIN.pdf}}{}{\scshape\sffamily 目录 \~{} Contents}
+\makeevenhead{toc}{\scshape\sffamily 目录 \~{} Contents}{\ThisTileWallPaper{\paperwidth}{\paperheight}{tocOUT.pdf}}{}
+\makefootrule{toc}{\textwidth}{2pt}{-9.6ex}
+\makeheadfootruleprefix{toc}{}{\color{ChapBlue}}
+
+\makepagestyle{fancy}
+\makeevenfoot{fancy}{\vskip-8em\hspace{-2.5em}\rotatebox[origin=l]{90}{{\LARGE\ebgaramond ☙}\enspace{\bfseries\Roman{page}}\enspace{\LARGE\ebgaramond ❧}}}{}{}
+\makeoddfoot{fancy}{}{}{\vskip-8ex\rotatebox[origin=r]{-90}{{\LARGE\ebgaramond ☙}\enspace{\bfseries\Roman{page}}\enspace{\LARGE\ebgaramond ❧}}\kern-2.5em}
+\makeevenhead{fancy}{}{\leftmark}{}
+\makeoddhead{fancy}{}{\rightmark}{}
+\makeheadrule{fancy}{\textwidth}{0.4pt}
+
+\makepagestyle{forchapter}
+\makeevenfoot{forchapter}{\ThisTileWallPaper{\paperwidth}{\paperheight}{coverIN.pdf}}{\vskip10pt\color{white}\LARGE\textbf{\arabic{page}}}{}
+\makeoddfoot{forchapter}{\ThisTileWallPaper{\paperwidth}{\paperheight}{coverIN.pdf}}{\vskip10pt\color{white}\LARGE\textbf{\arabic{page}}}{}
+
+
+
+\newcommand*{\thickhrulefill}{%
+    \leavevmode\leaders\hrule height 1\p@ \hfill \kern \z@}
+\makechapterstyle{BlueBox}{%
+    \setlength{\beforechapskip}{10pt}
+    \setlength{\midchapskip}{26pt}
+    \setlength{\afterchapskip}{20pt}
+    \renewcommand{\printchaptername}{}
+    \renewcommand{\chapternamenum}{}
+    \def\chapternorthwest{}
+    \def\chaptertitleIN{}
+    \renewcommand{\printchapternum}{}
+    \renewcommand{\printchaptertitle}[1]{\linespread{1}
+        \noindent\begin{tblr}{width = \textwidth + 5em , colspec = {X[-1, c]X[h,l]}}
+            \makebox[0pt][c]{\scshape Chapter} \strut                            & {\addtolength{\leftskip}{4ex} \thickhrulefill  \\ \Huge\bfseries ##1\strut\vspace*{-10em}} \\
+            \SetCell{bg=ChapBlue,fg=white,h,c}{\Huge\bfseries \thechapter\strut} & \SetCell{m}{\qquad\par\vspace*{2em}\TblrAlignBoth\addtolength{\leftskip}{2em}\setlength{\parindent}{2em}\slshape\linespread{1.3}\small\abstractIN \setlength{\parindent}{2em}} \\
+        \end{tblr}
+    }}
+
+\makeatother
+\makechapterstyle{toc}{%
+    \setlength{\beforechapskip}{10pt}
+    \setlength{\midchapskip}{26pt}
+    \setlength{\afterchapskip}{20pt}
+    \renewcommand{\printchaptername}{}
+    \renewcommand{\chapternamenum}{}
+    \def\chapternorthwest{}
+    \def\chaptertitleIN{}
+    \renewcommand{\printchapternum}{}
+    \renewcommand{\printchaptertitle}[1]{
+        \noindent\begin{tblr}{width = \textwidth, colspec = {X[-1, c]X[h,r]}}
+            \makebox[0pt][c]{\scshape Chapter} \strut                                                                  & {\qquad \thickhrulefill \\ \qquad\Huge\bfseries ##1\strut\vspace*{-10em}} \\
+            \SetCell{bg=ChapBlue,fg=white,h,c}{\rotatebox[origin=c]{90}{\color{white}\Huge\bfseries ~Contents~}\strut} &                         \\
+        \end{tblr}
+    }}
+
+
+\titleformat{\paragraph}[runin]{\bfseries\color{ChapBlue}}{}{}{{\special{pdf:literal direct 2 Tr 0.3 w }\color{ChapBlue}\ebgaramond\char"261E}\hspace*{0.5em}\special{pdf:literal direct 0 Tr 0 w }}[]
+
+\renewcommand{\contentsname}{目录\\ \LARGE Contents}
+
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{tocf}}}

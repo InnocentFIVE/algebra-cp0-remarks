@@ -1,0 +1,485 @@
+\documentclass[twosides]{memoir}
+\usepackage{tikz-cd}
+\input{pre}
+
+
+\setmathfont{NewCMMath-Regular.otf}
+\setmathfont[range = {"1D5A0-"1D63B, "1D5D4-"1D66F}]{Garamond-Math.otf}
+\DeclareMathOperator{\id}{id}
+
+\def\Obj{\operatorname{Obj}}
+\def\Hom{\operatorname{Hom}}
+\def\End{\operatorname{End}}
+\def\Aut{\operatorname{Aut}}
+\def\SET{\symsf{SET}}
+\def\st{\text{ \underline{st} }}
+\catcode`\。 = 13
+\def。{．}
+\setlist[enumerate]{label*=\arabic*.}
+\everymath{\displaystyle}
+\begin{document}
+
+\setlength{\lineskip}{5pt}
+\setlength{\lineskiplimit}{2.5pt}
+\setlength{\parskip}{0.5em}
+
+\setlist[itemize,2]{label = \(\circ\)}
+\chapterstyle{toc}
+\thispagestyle{empty}
+
+
+\clearpage
+
+\pagestyle{toc}\newgeometry{outer = 8cm, bottom = 6cm, top = 5cm, inner = 3cm}
+\frontmatter
+\tableofcontents*\restoregeometry
+\clearpage
+\linespread{1.3}
+
+\pagestyle{fancy}
+
+\mainmatter
+\chapterstyle{BlueBox}
+\setcounter{page}{1}
+
+\newchap{Preliminaries}{Preliminaries: \\
+Set theory \& categroies}{}
+\section{Naive set theory}
+
+
+\subsection{集合的运算}
+
+\begin{itemize}
+    \item \(\cup:\) union;
+    \item \(\cap:\) intersection;
+    \item \(\backslash:\) difference;
+    \item \(\amalg :\) disjoint union;
+    \item \(\times :\) set product;
+\end{itemize}
+
+\subsection{disjoint union}
+
+\begin{itemize}
+    \item \(S \amalg T\)：得到 \(S\) 与 \(T\) 的拷贝 \(S'\) 与 \(T'\)，且 \(S' \cap T' = \varnothing\)，则 \(S' \cup T' = S\amalg T\)。
+    \item 其中一种依赖于 set product 的实现：
+          \[
+              \begin{cases}
+                  S' \coloneqq \left\{ 0 \right\} \times S, \\
+                  T' \coloneqq \left\{ 1 \right\} \times T.
+              \end{cases}
+              \]
+\end{itemize}
+
+\subsection{set product}
+
+\[
+    S \times T\coloneqq \left\{ \left\{ \left\{ s \right\} ,\left\{ s,t \right\}  \right\} : s\in S\land t\in T \right\}
+    .\]
+
+将 \(\left\{ \left\{ s \right\} ,\left\{ s,t \right\}  \right\}\) 写作 \((s,t)\)，称为 pair。
+
+\subsection{等价关系}
+
+\begin{itemize}
+    \item 若 \(\symcal{R} \) 是二元关系，则 \(a,b\) 满足关系 \(\symcal{R} \) 写为：
+          \[
+              a\mathop{\symcal{R}}b
+              .\]
+    \item \textbf{等价关系}：若关系 \(\sim\) 定义在集合 \(S\)上满足：
+          \begin{itemize}
+              \item reflexivity: \((\forall a\in S) a \sim a\).
+              \item symmetry: \((\forall a\in S)(\forall b\in S) a\sim b \implies b \sim a\).
+              \item transitivity: \((\forall a\in S)(\forall b\in S)(\forall c\in S) a\sim b \land b\sim c \implies a\sim c\).
+          \end{itemize}
+          则称 \(\sim\) 是在集合 \(S\) 上的等价关系。
+\end{itemize}
+
+\subsection{分划与等价类 (partition \& equivalence class)}
+
+\begin{itemize}
+    \item \textbf{分划}是一个集合的集合，满足：
+          \[
+              \begin{cases}
+                  (\forall a\in P) (\forall b \in P) a \cap b = \varnothing, \\
+                  \bigcup_{a \in P} a = S.
+              \end{cases}
+              \]
+          则称 \(P\) 是 \(S\) 的分划。
+    \item 等价类：
+          \[
+              [a]_{\sim} \coloneqq  \left\{ x \in S : x \in a \right\}
+              .\]
+          称此为在 \(S\) 上 \(a\) 的等价类，由于等价类两两不交，且具有自反性，则 \(S\) 上某等价关系得到的所有等价类组成的集合是 \(S\) 的分划 \(\symcal P_{\sim}\)。
+\end{itemize}
+
+\subsection{集合商 (set quotient)}
+集合 \(S\) 与等价关系 \(\sim\) 的商定义为：
+\[
+    S /\mathord \sim \coloneqq\symcal{P} _{\sim}
+    .\]
+
+即 \(a,b\in S\) 等价 \(\iff\) 商到同一个元素。
+
+\begin{quote}{一个集合商的例子}
+    定义 \(\symbb{Z} \) 上的等价关系 \(\sim\) : \(a\sim b \iff \frac{a - b}{2} \in\symbb{Z}\)，则：
+    \[
+        \symbb{Z} /\mathord \sim = \left\{ [0]_{\sim} , [1]_{\sim} \right\}
+        .\]
+\end{quote}
+
+
+
+
+\section{Functions between sets}
+
+
+\subsection{函数}
+\begin{itemize}
+    \item 函数的 Graph:
+          \[
+              \Gamma _f \coloneqq \left\{ (a,b) \in A \times B : b = f(a) \right\}
+              .\]
+          且满足 \((\forall a\in A)(\exists !b\in B) (a,b) \in \Gamma_f \)，即 \((\forall a\in A)(\exists !b\in B) f(a) = b\)。
+    \item 函数的图的表示：
+
+          \[
+              \begin{cases}
+                  A \xrightarrow{f} B, \\
+                  a \mapsto f(a).
+              \end{cases}
+              \]
+
+\end{itemize}
+
+\subsection{Indentity function(id)}
+
+在集合 \(A\) 上有：
+\[
+    \id_A : A\to A , (\forall a\in A)\id_A(a) = a
+    .\]
+\subsection{函数的 image}
+
+若 \(S\subset A, f : A \to B\)，则：
+
+\[
+    f(S) \coloneqq \left\{ b\in B : (\exists a \in S) f(a) = b  \right\}
+    .\]
+
+则 \(f(A)\) 就是函数的image，记作 \(\operatorname{im}f\)
+
+\subsection{函数的 restriction}
+
+记 \(S\subset A\)，则：
+\[
+    f|_S : S \to A, (\forall s\in S) f|_S(s) = f(s)
+    .\]
+
+\subsection{函数的复合 (composition)}
+
+\begin{itemize}
+    \item 若 \(f:A\to B, g: B\to C\)，则 \(g\circ f: A\to C, (\forall a\in A) g\circ f(a) \coloneqq g\left( f(a) \right) \)。
+\end{itemize}
+
+\[
+    \begin{tikzcd}
+        A \arrow[rd, "g \circ f"]\arrow[r, "f"]  &   B\arrow[d, "g"]\\
+        {}  &   C
+    \end{tikzcd}
+    .\]
+
+{\slshape 此时称图是交换(commutative)的，因为图描述的所有从 \(A\) 到 \(C\) 的通路都会送 \(A\) 中的任意一个元素到相同的结果。 }
+
+函数的复合满足结合律：
+\[
+    \begin{tikzcd}
+        A\arrow[r, "f"]\arrow[rr, "g\circ f", bend left = -40]   &   B\arrow[r, "g"]\arrow[rr, "g\circ f", bend left = 40]    &   C\arrow[r, "h"]   &   D
+    \end{tikzcd}
+    .\]
+即 \(h \circ (g \circ f) = (h\circ g) \circ f\)。
+
+\subsection{单射、全射、双射(injections, surjections, bijections)}
+
+\begin{itemize}
+    \item 单射 (injections, \textbf{inj})
+
+          \(f: A\to B\) 是单的若：
+          \[
+              (\forall a'\in A)(\forall a''\in A) a' \neq a'' \implies f\left( a' \right) \neq f(a'')
+              .\]
+          实际上就是 \((\forall a'\in A)(\forall a''\in A) f\left( a' \right) = f\left( a'' \right) \implies a'=a''\)。
+          一般用箭头 \(f: A ↪ B \) 表示。
+
+    \item 全射 (surjections, \textbf{surj})
+          \(f : A\to B\) 是满的若：
+          \[
+              (\forall b\in B)(\exists a\in A) f(a) = b
+              .\]
+          此时 \(\operatorname{im}f = B\)。
+          一般用箭头 \(f: A ↠ B\) 表示。
+    \item 双射 (bijections, \textbf{bij})
+          \(f\) 是双的当且仅当 \(f\) 又单又满，一般用箭头 \(f: A\stackrel{\sim}{\to }B\) 表示。
+          \begin{itemize}
+              \item 若 \(\exists f: A \stackrel{\sim}{\to } B\)，则记此时 \(A\cong B\)，若其中一个集合元素数量有限，则另一个也有限且两个集合元素数量相等。
+              \item 集合 \(A\) 中的元素数量写作 \(|A|\)；幂集写作 \(2^A\)。
+          \end{itemize}
+\end{itemize}
+
+\subsection{单射、全射、双射的性质}
+\begin{itemize}
+    \item 双射有逆 (inverse)：
+          \begin{theo}{双射有逆}
+              定义函数 \(f: A\stackrel{\sim}{\to }B\)，定义 \(g: B \to 2^A, (\forall b\in B)g(b) = \left\{ a : f(a) = b \right\} \)，则由于 \(f\) 是单的，则 \((\forall a',a''\in A)f(a') = f(a'') \implies a' = a'\)，故 \((\forall b\in B ) |g(b)| = 1\)。故可以定义 \(g': B \to A, (\forall b\in B) g(b) = a, \text{ \underline{st} } f(a) = b\)，且是良定义的。
+
+              此时 \(g'\circ f = \id_A, f\circ g' = \id_B\)，此称 \(g'\) 为 \(f\) 的逆，记为 \(f^{-1} \)。
+          \end{theo}
+
+          双射的逆唯一：
+          \begin{proof}{双射的逆唯一}
+              定义 \(f : A \stackrel{\sim}{\to} B\) 的逆 \(g,g'\)，由于 \(f\circ\id_A = f = \id_B\circ f\)，因此：
+              \[
+                  g = g\circ \id_B = g\circ (f \circ g') = (g \circ f) \circ g' = \id_A \circ g' = g'
+                  .\]
+              故唯一。
+          \end{proof}
+    \item 左逆与右逆 (Linv \& Rinv)
+          若 \(f: A\to B, g\circ f = \id_A\)，则称 \(g\) 是 \(f\) 的左逆，同理有右逆。
+
+          如果 \(A \neq \varnothing, f:A\to B\)：
+          \begin{itemize}
+              \item \(f\) 有 Linv \(\iff f\) 是单的。
+                    \begin{proof}{}
+                        \begin{enumerate}
+                            \item (\(\implies \)) 若 \(f\) 有左逆，设为 \(f^{-1} \)，则：
+                                  \[
+                                      (\forall a,b\in A\land a\neq b)f^{-1} (f(a)) = \id_A(a) = a \neq b = f^{-1} (f(b))
+                                      .\]
+                                  若 \((\exists a,b\in A)f(a) = f(b)\)，则与上式矛盾，故 \(f\) 是单的。
+                            \item \(\impliedby \) 若 \(f\) 是单的，有双射有逆那部分的讨论知道 \((\forall b\in\operatorname{im}f)\exists !a \in A \text{ \underline{st} } f(a) = b\)，故定义：
+                                  \[
+                                      g(b)\coloneqq \begin{cases}
+                                          a, & \text{if }(\exists a\in A)b = f(a)，    \\
+                                          S, & \text{if } b \notin \operatorname{im}f.
+                                      \end{cases}
+                                  \]
+                                  则 \(g\) 满足 \(g\circ f = \id_A\)。
+                        \end{enumerate}
+                    \end{proof}
+              \item \(f\) 有 Rinv \(\iff f\) 是全的。
+                    \begin{proof}
+                        只证明 \(\impliedby \) 的部分，由于 \(f\) 是满的，定义：
+                        \[
+                            g:B\to 2^A, b\mapsto  \left\{ a\in A : f(a) = b\right\}
+                            .\]
+                        则 \((\forall b\in B)g(b) \neq \varnothing\)，定义：
+                        \[
+                            h:B\to A, b \mapsto a \text{ \underline{st} } a   \in g(b)
+                            .\]
+                        这样定义的 \(h\) 可能有很多种，但都满足其是 \(f\) 的右逆：
+                        \[
+                            (\forall b\in B)h(b) \in g(b) \implies f\circ h(b) = \id_B
+                            .\]
+                    \end{proof}
+              \item 若\(f\)同时有左逆和右逆，则两个逆相同。
+          \end{itemize}
+\end{itemize}
+\begin{quote}{一些单射、全射的例子}
+    \begin{itemize}
+        \item 投影
+              \[
+                  \begin{tikzcd}
+                      {}  &   A\times B\arrow[rd, "\pi_B", two heads]\arrow[ld, "\pi_A"', two heads]   &   {}  \\
+                      A   &   {}          &   B   \\
+                  \end{tikzcd}
+              \]
+              其中 \(\pi \) 是投影 (projection) 映射：
+              \[
+                  \begin{aligned}
+                      \pi _A((a,b)) \coloneqq a , \\
+                      \pi _B((a,b))\coloneqq b.
+                  \end{aligned}
+                  .\]
+              是全射。
+
+        \item 与不交并的映射
+              \[
+                  \begin{tikzcd}
+                      A\arrow[rd, "f_B",hook]   &   {}          &   B\arrow[ld, "f_A"', hook']   \\
+                      {}  &   A\amalg  B   &   {}  \\
+                  \end{tikzcd}
+              \]
+              若将 \(A\amalg B\) 表示为 \(A'\cup B'\)，其中 \(A'\overset{F_A}{\cong} A, B'\overset{F_B}\cong B\)，则 \((\forall a\in A)f_A(a) \coloneqq F_A(a) \in A\amalg B\)。
+        \item 商
+              \[
+                  \begin{tikzcd}
+                      A\arrow[r, "f", two heads]   &   A /\mathord \sim
+                  \end{tikzcd}
+              \]
+        \item 函数的标准分解 (Canonical decomposition)
+              对函数 \(f:A\to B\)，在 \(A\) 上建立等价关系：
+              \[
+                  a\sim b \iff f(a) = f(b)
+                  .\]
+              则函数可以分解为：
+              \[
+                  \begin{tikzcd}
+                      A\arrow[r, two heads]\arrow[rrr, bend left = 40, "f"]   &   A /\mathord \sim \arrow[r, "\sim", "\tilde f"']     &   \operatorname{im}f\arrow[r, hook]  &   B
+                  \end{tikzcd}
+              \]
+              其中 \(\tilde f:A / \mathord\sim \to \operatorname{im} f, \tilde f([a]_{\sim}) \coloneqq f(a)  \)，不难验证这是良定义的，现在证明 \(\tilde f\) 是双射：
+              \begin{proof}{}
+                  只需证明 \(f\) 既是单射也是全射就可以了：
+                  \begin{enumerate}
+                      \item \textbf{inj}:
+                            \[
+                                \tilde f\left( [a]_{\sim} \right)  = \tilde f\left( [b]_{\sim} \right) \implies f(a) = f(b) \implies a\sim b \implies [a]_{\sim} = [b]_{\sim}
+                                .\]
+                      \item \textbf{surj}:
+                            \[
+                                (\forall b\in \operatorname{im}f)\exists a\in A \text{ \underline{st} }f(a) = b \implies \tilde f\left( [a]_{\sim} \right) = b
+                                .\]
+                  \end{enumerate}
+              \end{proof}
+    \end{itemize}
+\end{quote}
+
+
+
+\section{范畴 (Categories)}
+
+
+
+一个范畴 \(\symsf C\)包括：
+\begin{itemize}
+    \item 一个类 \(\Obj(\symsf C)\)，包括了对象 (object)。
+    \item 对任意两个对象 \(A,B\) 存在一个集合记为 \(\Hom_{\symsf C}(A,B)\) 包含了从 \(A\) 到 \(B\) 的全部态射 (morphisms)，态射和 \(\Hom\) 满足以下特点：
+          \begin{itemize}
+              \item[\textbf{幺元的存在性}] \(\forall A\in \symsf C,\exists 1_A \in \Hom_{\symsf C}(A,A) \eqcolon \End_{\symsf C}(A)\)，称为 \(A\) 的 indentity。
+              \item[\textbf{态射复合的存在性}] 若 \(\exists f\in \Hom_{\symsf C}(A,B), g\in \Hom_{\symsf C}(A,B)\)，则存在 \(f,g\) 决定的态射 \(gf\in \Hom_{\symsf C}(A,C)\)，由于 \(\Hom\) 是集合，因此存在函数：
+                  \[
+                      \Hom_{\symsf C}(A,B) \times \Hom_{\symsf C}(B,C) \to \Hom_{\symsf C}(A,C)
+                      .\]
+              \item[\textbf{态射复合的结合性}] 若 \(f\in \Hom_{\symsf C}(A,B), g\in \Hom_{\symsf C}(B,C), h\in \Hom_{\symsf C}(C,D)\)，则
+                  \[
+                      (hg)f = h(gf)
+                      .\]
+                  这一性质导致态射图可交换。
+              \item [\textbf{幺元律}]\[
+                        \forall f\in \Hom_{\symsf C}(A,B),f 1_A = 1_Bf=f
+                        .\]
+          \end{itemize}
+\end{itemize}
+
+\begin{quote}{一些范畴的小例子}
+    \begin{enumerate}[label = \textbf{\arabic*.}]
+        \item 对象为集合、态射为集合函数的范畴，记为 \(\SET\)：
+              \begin{itemize}
+                  \item \(\Obj(\SET) \coloneqq \) 一个包含所有集合的类。
+                  \item \(\Hom_{\SET}(A,B) \coloneqq B^A\)。
+              \end{itemize}
+        \item 一个关于二元运算的范畴：若 \(S\) 上的二元运算 \(\sim\) 满足：
+              \[
+                  (\forall a,b,c\in S)\begin{cases}
+                      a\sim a, \\
+                      a\sim b\land b\sim c\implies a\sim c .
+                  \end{cases}
+              \]
+              则定义 \(\symsf C_{\sim}\)：
+              \begin{itemize}
+                  \item \(\Obj\left( \symsf C_{\sim} \right) \coloneqq S\)。
+                  \item \(\Hom_{\symsf C_{\sim}}(A,B)\coloneqq \begin{cases}
+                            (A,B),       & \text{if }A\sim B,  \\
+                            \varnothing, & \text{if }A\nsim B.
+                        \end{cases}\)
+              \end{itemize}
+              定义复合为：
+              \[
+                  \circ _{\symsf C_{\sim}} :((A,B),(B,C))\mapsto (A,C)
+                  .\]
+              则其为一个范畴。
+              \begin{itemize}
+                  \item 一个特例，如果认为 \(S=\symbb{Z} \)，\(\sim\) 为 \(\leqslant \)，则态射图如下：
+                        \[
+                            \begin{tikzcd}
+                                2\arrow[r]\arrow[rd]   &   3\arrow[r]\arrow[d, "1_3"]   &   4\arrow[r]   &   5   \\
+                                {}  &   3\arrow[r]\arrow[rru]   &   4\arrow[ru]   &   {}
+                            \end{tikzcd}
+                        \]
+              \end{itemize}
+        \item \textbf{由范畴诱导范畴}
+              \begin{itemize}
+                  \item [\scshape\bfseries Slice CAT]
+                        考虑范畴 \(\symsf C\) 中的对象 \(A\)，接下来构建 \(\symsf C_A\)：
+                        \begin{itemize}
+                            \item \(\Obj(\symsf C_A) \coloneqq \)  \(\symsf C\) 中所有到 \(A\) 的态射。
+                            \item \(\Hom_{\symsf C_A}(f_1,f_2) = \left\{ \sigma :f_1=f_2 \sigma  \right\} \)。
+                        \end{itemize}
+                        \[
+                            \begin{tikzcd}
+                                Z_1\arrow[d, "f_1"']\arrow[rd, "\sigma "] &   {}\\
+                                A   & \arrow[l,"f_2"']  Z_2 \\
+                            \end{tikzcd}
+                        \]
+                        \(\symsf C_A\) 中态射的复合取自 \(\symsf C\) 中的态射复合。
+                  \item [\scshape\bfseries CoSlice CAT]
+                        同理，只不过将从到 \(A\) 变成了 \(A\) 到其他对象的态射。
+                  \item [\scshape\bfseries Opp CAT]
+                        \begin{itemize}
+                            \item \(\Obj(\symsf C^{\symup{op}})\coloneqq \Obj(\symsf C)\)。
+                            \item \(\Hom_{\symsf C^{\symup{op}}}(A,B)\coloneqq \Hom_{\symsf C}(B,A)\)。
+                        \end{itemize}
+              \end{itemize}
+    \end{enumerate}
+\end{quote}
+
+
+\subsection{态射们}
+
+\begin{itemize}
+    \item \textbf{同构}(Isomorphisms)
+          若一个态射 \(f \in \Hom_{\symsf C}(A,B)\) 满足：
+          \[
+              \exists g\in \Hom_{\symsf C}(B,A) \st gf=1_A, fg=1_B
+              .\]
+          则 \(f\) 是一个同构，此时记 \(g\) 为 \(f^{-1} \)，如果 \(f\) 有左逆、右逆，则它们必然相等（唯一）。
+          \begin{itemize}
+              \item \(1_A\) 是自逆的。
+              \item \((fg)^{-1} = g^{-1} f^{-1} \)。
+          \end{itemize}
+          \begin{quote}{一些关于逆相关范畴的例子}
+              \begin{itemize}
+                  \item 一个同构都是 indentity 的例子，用 \((\symbb{Z} ,\leqslant )\)定义的范畴。
+                  \item 一个每个态射都是同构的例子，用 \((\symbb{Z} ,=)\) 定义的范畴。这种性质的范畴被称为广群 (Groupoids)。
+              \end{itemize}
+          \end{quote}
+    \item 自同构 (Automorphisms)
+          就是属于 \(\End\) 的同构，所有 \(A\) 的自同构组成的集合称为 \(\Aut_{\symsf C}(A)\)
+          \begin{itemize}
+              \item \(f,g \in\Aut_{\symsf C}(A) \implies fg\in\Aut_{\symsf C}(A)\)。
+              \item \(f\in \Aut_{\symsf C}(A) \implies f^{-1} \in\Aut_{\symsf C}(A)\)。
+          \end{itemize}
+
+          \(\Aut\) 是一个\textbf{群} (Group)。
+    \item 单态射 (Monomophisms, \textbf{Monic})
+
+          即满足左消去律的态射：
+
+          \begin{gather*}
+              \forall Z\in \Obj(\symsf C),\forall a,b\in\Hom_{\symsf C}(Z,A),f:A\to B\\
+              f \text{ is a monic} \iff \left( f\circ a=f\circ b \implies a=b \right)
+          \end{gather*}
+    \item 全态射 (Epimorphisms, \textbf{Epic})
+
+          满足右消去律的态射：
+
+          \begin{gather*}
+            \forall Z\in \Obj(\symsf C),\forall a,b\in\Hom_{\symsf C}(B,Z) ,f:A\to B\\
+            f \text{ is an epic} \iff \left( a\circ f=b\circ f \implies a=b \right)
+        \end{gather*}
+
+\end{itemize}
+
+
+\end{document}
+
+
+莉莉白可爱！ 
