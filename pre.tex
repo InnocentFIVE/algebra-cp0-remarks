@@ -18,6 +18,8 @@
 \usepackage{pxrubrica}
 \usepackage{hyperref}
 \usepackage{multicol}
+
+
 \usetikzlibrary{patterns}
 \usetikzlibrary{arrows.meta}
 \tcbuselibrary{skins}
@@ -30,6 +32,7 @@
 \setsansfont{Noto Sans}
 
 \makeatletter
+\setcounter{tocdepth}{2}
 \newCJKfontfamily\NotoSerifCJKJP{Noto Serif CJK JP}
 \renewcommand{\cftchapteraftersnumb}{\hfill}
 \renewcommand{\cftchapterfont}{\sffamily\large\bfseries}
@@ -42,12 +45,17 @@
 \renewcommand{\cftsectionfont}{\sffamily\scshape\small\bfseries}
 \renewcommand{\cftsectionname}{{\small\bfseries\color{ChapBlue} \S}\space}
 \renewcommand{\cftsectionafterpnum}{\cftparfillskip}
-\renewcommand*{\cftsectionformatpnum}[1]{\sffamily\small{\color{ChapBlue}\titlerule*[0.2pc]{\(\cdot\)}}~~\textit{#1}}
+\renewcommand*{\cftsectionformatpnum}[1]{\sffamily\small{\large\special{pdf:literal direct 2 Tr 0.3 w }\color{ChapBlue}\(\longmapsto\kern-0.8em{\color{white}\special{pdf:literal direct 2 Tr 0.8 w }∎\special{pdf:literal direct 2 Tr 0.3 w }}\)\kern-1.5em\titlerule*[0.1pc]{\(-\)}\(\!\!\!\longrightarrow\)\special{pdf:literal direct 0 Tr 0 w }}~~\textit{#1}}
 
-\renewcommand*{\cftsubsectionleader}{~\color{ChapBlue!20!white}\sffamily \(\longmapsto\kern-0.8em{\color{white}\special{pdf:literal direct 2 Tr 0.3 w }∎\special{pdf:literal direct 0 Tr 0 w }}\)\kern-1.5em\titlerule*[0.1pc]{\(-\)}\(\!\!\!\longrightarrow\)}
+\renewcommand*{\cftsubsectionleader}{~\color{ChapBlue!20!white}\sffamily \titlerule*[0.2pc]{\(\cdot\)}}
 \renewcommand{\cftsubsectionfont}{\footnotesize\slshape}
 \renewcommand*{\cftsubsectionformatpnum}{~~\itshape\footnotesize\color{ChapBlue}}
 \renewcommand{\cftsubsectionafterpnum}{\cftparfillskip\hspace*{2em}\par}
+
+
+
+\newenvironment{defi}[2]{\mbox{}\\{\LARGE\({⌜}\)}\({}^{\color{ChapBlue}\symbf{DEF} }\)\hfill\textsf{\textbf{#1}}\\
+    \slshape\small #2}{\mbox{}\hfill{\LARGE\(⌟\)}\par}
 
 \renewenvironment{cases}[1]{\begin{dcases}#1}{\end{dcases}}
 
@@ -78,7 +86,7 @@
             leftrule = 0pt,
             rightrule = 0pt, breakable,
             colupper = darkgray
-            ]\slshape\small\color{darkgray} #2}{\end{tcolorbox}}
+        ]\slshape\small\color{darkgray} #2}{\end{tcolorbox}}
 \newfontface\ebgaramond{EB Garamond}
 \usepackage[top=1.25in,bottom=1.3in,outer=1.3in,inner=1.3in]{geometry}
 \newsavebox{\ChpNumBox}
@@ -101,9 +109,9 @@
 
 \titleformat{\section}[hang]
 {\vspace*{-3ex}}{\begin{tblr}{colspec = {c}, rows = {abovesep = 3pt,belowsep = -1pt}, row{2} = {abovesep = -5pt},baseline = T}
-            \SetCell{bg = ChapBlue!50!white, fg = ChapBlue!80!black}{\bfseries\LARGE\arabic{chapter}.\arabic{section}} \\
-            \makebox[0pt][c]{\scshape\textit{Section}}
-        \end{tblr}}{1em}{\color{ChapBlue!70!black}\special{pdf:literal direct 2 Tr 0.5 w}\LARGE\(\longmapsto\kern-0.8em{\color{white}\special{pdf:literal direct 2 Tr 0.9 w}∎}\special{pdf:literal direct 2 Tr 0.5 w}\)\kern-1.5em\titlerule*[0.1pc]{\(-\)}\(\!\!\!\longrightarrow\)\special{pdf:literal direct 0 Tr 0 w}~~\color{black}\Large\bfseries}[]
+    \SetCell{bg = ChapBlue!50!white, fg = ChapBlue!80!black}{\bfseries\LARGE\arabic{chapter}.\arabic{section}} \\
+    \makebox[0pt][c]{\scshape\textit{Section}}
+\end{tblr}}{1em}{\color{ChapBlue!70!black}\special{pdf:literal direct 2 Tr 0.5 w}\LARGE\(\longmapsto\kern-0.8em{\color{white}\special{pdf:literal direct 2 Tr 0.9 w}∎}\special{pdf:literal direct 2 Tr 0.5 w}\)\kern-1.5em\titlerule*[0.1pc]{\(-\)}\(\!\!\!\longrightarrow\)\special{pdf:literal direct 0 Tr 0 w}~~\color{black}\Large\bfseries}[]
 
 \newcommand{\abstractIN}{}
 
@@ -164,7 +172,7 @@
     \renewcommand{\printchapternum}{}
     \renewcommand{\printchaptertitle}[1]{\linespread{1}
         \noindent\begin{tblr}{width = \textwidth + 5em , colspec = {X[-1, c]X[h,l]}}
-            \makebox[0pt][c]{\scshape Chapter} \strut                            & {\addtolength{\leftskip}{4ex} \thickhrulefill  \\ \Huge\bfseries ##1\strut\vspace*{-10em}} \\
+            \makebox[0pt][c]{\scshape Chapter} \strut                            & {\addtolength{\leftskip}{4ex}\thickhrulefill   \\  \Huge\bfseries ##1\strut\vspace*{-10em}}                                                                           \\
             \SetCell{bg=ChapBlue,fg=white,h,c}{\Huge\bfseries \thechapter\strut} & \SetCell{m}{\qquad\par\vspace*{2em}\TblrAlignBoth\addtolength{\leftskip}{2em}\setlength{\parindent}{2em}\slshape\linespread{1.3}\small\abstractIN \setlength{\parindent}{2em}} \\
         \end{tblr}
     }}
@@ -182,7 +190,7 @@
     \renewcommand{\printchaptertitle}[1]{
         \noindent\begin{tblr}{width = \textwidth, colspec = {X[-1, c]X[h,r]}}
             \makebox[0pt][c]{\scshape Chapter} \strut                                                                  & {\qquad \thickhrulefill \\ \qquad\Huge\bfseries ##1\strut\vspace*{-10em}} \\
-            \SetCell{bg=ChapBlue,fg=white,h,c}{\rotatebox[origin=c]{90}{\color{white}\Huge\bfseries ~Contents~}\strut} &                         \\
+            \SetCell{bg=ChapBlue,fg=white,h,c}{\rotatebox[origin=c]{90}{\color{white}\Huge\bfseries ~Contents~}\strut} &                                                                                    \\
         \end{tblr}
     }}
 

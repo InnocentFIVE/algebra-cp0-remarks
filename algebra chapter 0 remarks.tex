@@ -1,0 +1,692 @@
+\documentclass[twosides]{memoir}
+\usepackage{tikz-cd}
+\input{pre}
+\usetikzlibrary {lindenmayersystems}
+   
+\setmathfont{NewCMMath-Regular.otf}
+\setmathfont[range = {"1D5A0-"1D63B, "1D5D4-"1D66F}]{Garamond-Math.otf}
+\DeclareMathOperator{\id}{id}
+
+\def\Obj{\operatorname{Obj}}
+\def\Hom{\operatorname{Hom}}
+\def\End{\operatorname{End}}
+\def\Aut{\operatorname{Aut}}
+\def\SET{\symsf{SET}}
+\def\GRP{\symsf{GRP}}
+\def\st{\text{ \underline{st} }}
+\catcode`\。 = 13
+\def。{．}
+\setlist[enumerate]{label*=\arabic*., leftmargin = 0pt}
+\setlist[itemize]{leftmargin = 0pt}
+\everymath{\displaystyle}
+\begin{document}
+
+\setlength{\lineskip}{5pt}
+\setlength{\lineskiplimit}{2.5pt}
+\setlength{\parskip}{0.5em}
+
+\setlist[itemize,2]{label = \(\circ\)}
+\chapterstyle{toc}
+\thispagestyle{empty}
+
+
+\clearpage
+
+\pagestyle{toc}\newgeometry{outer = 8cm, bottom = 6cm, top = 5cm, inner = 3cm}
+\frontmatter
+\tableofcontents*\restoregeometry
+\clearpage
+\linespread{1.3}
+
+\pagestyle{fancy}
+
+\mainmatter
+\chapterstyle{BlueBox}
+\setcounter{page}{1}
+
+
+\input{chatper I.tex}
+
+\newchap{Groups}{Group, first encounter}{
+    \textbf{乐子.}\ 一个群(group)是一个单对象广群的同态集 \(\Aut\) 。
+}
+
+
+\section{群的定义}
+\begin{defi}{群}
+    \begin{itemize}
+        \item 群 \(G\) 是一个集合，上面赋予了二元运算 \(\circ_G :G\times G\to G\)，满足结合律：
+
+              \[
+                  (\forall a,b,c\in G)a\circ_G b\circ_G c = a\circ_G(b\circ_G c)
+                  .\]
+
+        \item 存在幺元
+              \[
+                  (\exists e_G \in G)(\forall g\in G)   \st g\circ_G e_G = e_G\circ_G g = g
+                  .\]
+
+        \item 存在逆元
+
+              \[
+                  (\forall g\in G)(\exists g^{-1} \in G) g\circ_G g^{-1} =g^{-1} \circ_G g = e_G
+                  .\]
+    \end{itemize}
+\end{defi}
+
+\begin{quote}{一些例子}
+    比如 \((\symbb{Z} ,+),(\symbb{C}, +),(\symbb{Q}_{\neq 0} ,\times  )\)都是群。
+
+    \textbf{可逆} \(n\times n\) 实矩阵组成的群表示为 \(\symrm{GL}_{n}(\symbb{R} ) \)。
+\end{quote}
+
+\subsection{群的一些小性质}
+
+\begin{itemize}
+    \item 幺元唯一
+    \item 逆元唯一
+
+          （由于结合律，记 \(g^n \coloneqq \underbrace{g\circ \cdots \circ g}_{n\text{ times}}, g^{-n} \coloneqq \underbrace{g^{-1} \circ \cdots \circ g^{-1} }_{n\text{ times}}\)），显然 \(g^ag^b = g^{a+b}\)。
+
+          如果是可交换群则用 \(+\) 表示定义在其上的运算。
+
+    \item 群的消去律
+
+          由于群元素有逆，因此可以同时左/右消去。
+\end{itemize}
+
+\subsection{阶}
+
+
+\begin{defi}{群元素的阶}
+    若 \(g\in G,\exists n\in\symbb{N} ,g^n = e\)，则 \(|g|\coloneqq \inf_{g^n=e} n\)，称为该元素在群 \(G\) 中的阶。
+\end{defi}
+\begin{itemize}
+    \item 如 \(g^n = e\)，则 \(|g|\mid n\)。
+
+          \begin{proof}{}
+              考虑 \(g^{n - |g| \left\lfloor \frac{n}{|g|} \right\rfloor}\)。
+          \end{proof}
+
+    \item 如果群是有限的，那么 \(|G| \)记为该群的阶。则 \(|G|\geqslant |g|,\forall g\in G\)。
+
+          群的阶在交换的前提下长得比较奇妙。以下是另一个重要的推论：
+
+    \item 若 \(g\in G\)  的阶为 \(n\), 则对任意 \(m\in\symbb{N} _{>0}\)：
+          \[
+              |g^m|  = \frac{\operatorname{lcm}(m, |g|)}{m} = \frac{|g|}{\operatorname{gcd}(m,|g|)}
+              .\]
+
+          \begin{proof}{}
+              若 \(\left( g^m \right)^n = g^{mn}= e \)，则：
+              \[
+                  |g|\mid mn\land m\mid mn\implies \inf mn = \operatorname{lcm}(m, |g|) \implies \inf n = \frac{\operatorname{lcm}(m, |g|)}{m} = \frac{|g|}{\operatorname{gcd}(m,|g|)}
+                  .\]
+          \end{proof}
+
+    \item 如果 \(gh = hg\)，则 \(\left\vert gh \right\vert \mid \operatorname{lcm}(|g|,|h|)\)：显然 \((gh)^N = g^Nh^N\implies (gh)^{\operatorname{lcm}(|g|,|h|)}=e\)。
+\end{itemize}
+
+\subsection{一些总结}
+
+\begin{itemize}
+    \item 乘法表可以用来表示一些群：
+          \begin{center}
+              \begin{tblr}{c|ccc}
+                        & \(e\) & \(g\) & \(h\) \\\hline
+                  \(e\) & \(e\) & \(g\) & \(h\) \\
+                  \(g\) & \(g\) & \(h\) & \(e\) \\
+                  \(h\) & \(h\) & \(e\) & \(g\) \\
+              \end{tblr}
+              \quad
+              \begin{tblr}{c|cc}
+                        & \(e\) & \(g\) \\  \hline
+                  \(e\) & \(e\) & \(g\) \\
+                  \(g\) & \(g\) & \(e\)
+              \end{tblr}
+          \end{center}
+          从乘法表看出，单元素群（平凡群）、二元素、三元素群都只有一种结构。
+
+    \item \(gG \coloneqq \left\{ gh:h\in G \right\} = G\)，实际上是群到群自身的映射 \(I_g :G\to G\)。由群元素可逆易证。
+
+          以下是一些关于交换的例子：
+
+    \item 若 \(\operatorname{gcd}\left(|g|,|h| \right) = 1 \)，则 \(|gh| = |g||h|\)，以下是一个典型的证明：
+          \begin{proof}{}
+              考虑 \((gh)^{|gh|} =e\implies (gh)^{|gh|\cdot |h|}=e\)，即：
+              \[
+                  g^{|gh||h|} = e \implies |g|\mid|gh||h|\xRightarrow{\operatorname{gcd}(|h|,|g|) = 1} |g|\mid|gh|
+                  .\]
+              同理 \(|h|\mid|gh|\)，故 \(\operatorname{lcm}(|g|,|h|)\mid |gh|\)，又 \(\left\vert gh \right\vert \mid \operatorname{lcm}(|g|,|h|)\)，故 \(|gh| = |g||h|\)。
+          \end{proof}
+    \item 若一个交换群 \(G\) 有有限的阶，则设其元素阶的最大值为 \(|g|\)，则 \(\forall h\in G(|h|\mid |g|)\)，以下是另一个典型的证明：
+
+          \begin{proof}{}
+              如果 \(|h| \nmid |g|\)，则 \(\exists p\in\symbb{P}  \st |g| = p^mr, |h|=p^ns,m<n\)，否则 \(|h|\) 中所有质数的指数都不大于 \(|g|\)，即 \(|h|\mid |g|\)。
+
+              接下来考虑 \(\left\vert g^{p^m}h^s \right\vert \)，使用上一个推论：
+              \[
+                  \left\vert g^{p^m} \right\vert = r, \left\vert h^s \right\vert =p^n
+                  .\]
+              由于 \(\operatorname{gcd}\left( p^n,r \right) =1\)，因为 \(p\in\symbb{P} \)。故 \(\left\vert g^{p^m}h^s \right\vert =  \left\vert g^{p^m} \right\vert  \left\vert h^s \right\vert=p^n r>|g|\)，矛盾！
+          \end{proof}
+\end{itemize}
+
+
+\section{一些群}
+
+\subsection{对称（置换）群 (symmetric groups)}
+
+\begin{defi}{对称群}
+    对称群是一个对集合 \(S_A\) 的置换 \(\Aut_{\SET}(S_A)\)，一个对 \(\left\{ \textbf{1},\cdots ,\textbf{n} \right\} \) 的置换群记为 \(S_n\)。
+\end{defi}
+
+很显然 \(\left\vert S_n \right\vert =n!\)，这里指的是群元素数量而不是阶。
+
+\paragraph{低阶对称群们}
+
+\(S_2\)只有两个元素 \(e,f\)：
+\[
+    e = (1,2),f = (2,1)
+    .\]
+
+易证是交换的 (双元素群都是交换的)
+
+\(S_3\) 有六个元素：
+\[
+    \left\{
+    \begin{array}{ccc}
+        (1,2,3), & (2,1,3), & (3,2,1), \\
+        (1,3,2), & (3,1,2), & (2,3,1)
+    \end{array}
+    \right\}
+    .\]
+
+\(S_3\) 是不交换的。
+
+\paragraph{群的生成初探}
+
+在 \(S_3\) 的例子中，令 \(x = (2,1,3), y =(3,1,2)\)，则 \(S_3\) 中六各元素可以只用 \(x,y\) 表示：
+\[
+    S_3=\left\{ e,x,y,y^2 ,xy,xy^2\right\}
+    .\]
+
+其中 \(x^2 =e,y^3 =e\)。我们称 \(A\subset G\) 生成 \(G\) 若每个 \(G\) 中元素都可以表示成 \(A\) 中元素与 \(A\) 中元素的逆的乘积。
+
+\subsection{二面体群 (Dihedral groups)}
+
+\begin{defi}{二面体群}
+    一个正 \(n\) 边形有以下 \(2n\) 种对称情况：
+
+    \begin{itemize}
+        \item 绕中心旋转 \( \frac{2i\pi}{n} \)，其中 \(i\in\left\{ 0,1,\cdots ,n-1 \right\} \)有 \(n\)种。
+        \item 若 \(n\in\symbb{Odd} \)，则有 \(n\) 种翻转（沿着中心与 \(n\) 个顶点的连线，同时也连接对应边的中点）。
+
+              若 \(n\in\symbb{Even} \)，则有 \(\frac{n}{2}\)种沿着中心到顶点的翻转， \(\frac{n}{2}\)种中心到边中点的翻转，总共 \(n\) 个。
+    \end{itemize}
+
+
+    故加起来总共有 \(2n\) 种对称性，因此二面体群记为 \(D_{2n}\)。
+\end{defi}
+
+
+如果给每个顶点标号，则 \(D_{2n}\subseteq S_n\)。一些特殊的情况是 \(D_6=S_3,D_4=S_2\)（因为群元素数量相同）。
+
+\subsection{循环群和一些同余算术 (Cyclic groups and modular arithmetic)}
+
+\begin{defi}{循环群}
+    建立在 \(\symbb{Z} \) 上的等价关系如下：
+    \[
+        (\forall a,b\in\symbb{Z} ): a\equiv b \mod n \iff n\mid (b-a)
+        .\]
+    这称为 \(n\) 的 congruence modulo。我们记商集 \(\symbb{Z} /\mathord \equiv _{n} =\symbb{Z} /n\symbb{Z} \)。
+
+    则此是一个元素为同余等价类的集合：
+    \[
+        [0]_n,\cdots ,[n-1]_n
+        .\]
+    定义此集合上的运算 \(+\)：
+    \[
+        [a]_n + [b]_n \coloneqq  [a+b]_n
+        .\]
+
+    （由于同余保持加法）这个运算是良定义的，在此运算的基础上，集合的单位元为 \([0]_n\) ， \([m]_n\) 的逆元为 \([-m]_m\)，保持交换律、结合律，因此是个交换群，不妨记作 \(\symbb{Z} /n\symbb{Z} \)。
+\end{defi}
+
+以下是一些推论：
+
+\begin{itemize}
+    \item \(\left\vert [m]_n \right\vert = \frac{n}{\operatorname{lcm}(m,n)} \)。由于 \(\left\vert g^m \right\vert = \frac{|g|}{\operatorname{lcm}(|g|,m)} \)，因此将 \([m]_n\) 看成 \(m[1]_n\) 即可。
+    \item 在上面推论的前提下得到一个关于循环群的重要性质：
+
+          同余等价类 \([m]_n\) 可以生成整个 \(\symbb{Z} /n\symbb{Z} \iff \operatorname{gcd}(m,n) = 1\)，因为阶刚好和群元素数量相等。
+\end{itemize}
+
+同余也保持乘法，但是没法在 \(\symbb{Z} /n\symbb{Z} \) 上面建立群（因为有 \([0]_n\)），因此考虑：
+\[
+    (\symbb{Z} /n\symbb{Z} )^*\coloneqq \left\{ [m]_n\in\symbb{Z} / n\symbb{Z} :\operatorname{gcd}(m,n) = 1 \right\}
+    .\]
+则 \(( (\symbb{Z} /n\symbb{Z} )^*, \times )\) 是个群。
+以下是一些证明：
+\begin{itemize}
+    \item 首先证明这个集合关于乘法封闭：
+          \[
+              \operatorname{gcd}(a,n)=1\land\operatorname{gcd}(b,n)=1\implies \operatorname{gcd}(ab,n)=1\implies [ab]_n\in (\symbb{Z} /n\symbb{Z} )^*
+              .\]
+    \item 群的单位元显然是 \([1]_n\)，接下里是逆元的存在性：
+
+          由于 \(\operatorname{gcd}(m,n) = 1\)，则 \([m]_n\) 可以生成整个 \(\symbb{Z} /n\symbb{Z} \)，故 \((\exists a\in\symbb{N} ) a[m]_n = [1]_n\implies [am]_n = [1]_n\)，因此 \([m]_n\)在 \((\symbb{Z} /n\symbb{Z} )^*\) 中的逆元为 \([a]_n\)。
+\end{itemize}
+
+
+\section{群范畴 \(\GRP\)}
+
+\subsection{群同态 (Group homomorphisms)}
+
+\begin{defi}{群同态}
+    群同态是一个态射：
+    \[
+        \psi :G\to H
+        .\]
+    不妨再定义：
+    \[
+        \psi \times \psi :G\times G\to H\times H, \psi \times \psi ((a,b))  =  (\psi (a), \psi (b))
+        .\]
+    则满足下图交换的态射 \(\psi \) 就是 \(G\to H\) 的群同态 \(\in \Hom_{\GRP}(G,H)\)：
+    \[
+        \begin{tikzcd}
+            G\times G\arrow[r, "\psi  \times \psi "]\arrow[d, "\circ_G"] & H\times H\arrow[d, "\circ_H"] \\
+            G           \arrow[r, "\psi "]                               & H
+        \end{tikzcd}
+    \]
+    为了使上图交换必须有：
+    \[
+        \begin{tikzcd}
+            (a,b)\arrow[d, "\circ_G",mapsto]               &                            \\
+            a\circ_G b           \arrow[r, "\psi ",mapsto] & \boxed{\psi (a\circ_G b )}
+        \end{tikzcd}\quad = \quad
+        \begin{tikzcd}
+            (a,b)\arrow[r, "\psi \times \psi ",mapsto] & (\psi (a),\psi (b))\arrow[d, "\circ_H"] \\
+                                                       & \boxed{\psi (a)\circ_H \psi(b)}
+        \end{tikzcd}
+    \]
+    即 \(\psi (ab) = \psi (a)\psi (b)\)：群同态保持群结构。
+\end{defi}
+
+
+\begin{defi}{\(\GRP\)}
+    \begin{itemize}
+        \item \(\Obj(\GRP) \coloneqq  \) 所有的群。
+        \item \(\Hom_{\GRP}(G,H)\coloneqq \) 所有 \(G\to H\) 的群同态。
+    \end{itemize}
+\end{defi}
+
+群同态的一些性质如下：
+\begin{itemize}
+    \item 群同态保持逆、幺元和阶
+
+          \begin{proof}{群同态保持逆、幺元}
+              \begin{itemize}
+                  \item 设 \(f:G\to H\) 是群同态，则：
+                        \[
+                            0_H\circ_H f(0_G) = f(0_G) = f(0_G\circ_G0_G)=f(0_G)\circ_Hf(0_G)\xRightarrow{\text{消去律}}  f(0_G) = 0_H
+                            .\]
+                  \item \(f(g)\circ_H f\left( g^{-1}  \right) = f\left( g\circ_G g^{-1}  \right) =f(0_G)  = 0_H\implies f\left( g^{-1}  \right)=f(g)^{-1} \)。
+              \end{itemize}
+          \end{proof}
+\end{itemize}
+
+\begin{defi}{群的直积 (Direct product)}
+    按照集合积的方法有：
+    \[
+        G\times H=\left\{ (a,b):a\in G\land b\in H \right\}
+        .\]
+    而 \(G\times H\) 上的运算定义为：
+    \[
+        \circ_{G \times H} :(G \times H)\times (G \times H)\to G \times H, ((a,b),(c,d)) \mapsto (a\circ_G c,b\circ_H d)
+        .\]
+    同时还有两个标准投影：
+    \[
+        \begin{tikzcd}
+            {} & G\times H\arrow[ld, "\pi _G"]\arrow[rd, "\pi _H"'] & {} \\
+            G  & {}                                                 & H
+        \end{tikzcd}
+    \]
+\end{defi}
+
+
+\begin{proof}{群的直积就是 \(\GRP\) 中两个群 \(G,H\) 的积：}
+    \[
+        \begin{tikzcd}
+            {}                                                                                                                            & {} & {}                                                 & G  \\
+            Z\arrow[rr, "\exists !\psi _G\times \psi _H"]\arrow[rrru, "\psi _G", bend left = 20]\arrow[rrrd, "\psi _H"', bend left = -20] & {} & G\times H\arrow[rd, "\pi _H"]\arrow[ru, "\pi _G"'] & {} \\
+            {}                                                                                                                            & {} & {}                                                 & H
+        \end{tikzcd}
+    \]
+    存在唯一一个态射 \(\psi _G\times \psi _H\) 满足条件。证明与集合积的证明相同：
+    \[
+        \begin{aligned}
+            \psi _G\times \psi _H(ab) & = (\psi _G(ab),\psi _H(ab)) = (\psi_G(a)\psi_G(b), \psi_H(a)\psi_H(b))                             \\
+                                      & =(\psi _G(a),\psi _H(a))(\psi _G(b),\psi _H(b)) = \psi _G\times \psi _H(a)\psi _G\times \psi _H(b)
+        \end{aligned}
+    \]
+    故该态射也是一个群同态。
+\end{proof}
+
+群的余积一般表示为 \(G * H\)，也被称为自由积 (free product)，此处按下不表。
+
+\paragraph{一些关于交换群的东西}\mbox{}
+
+\begin{defi}{\(\symsf{Ab}\)}
+    \begin{itemize}
+        \item \(\Obj(\symsf{Ab}) \coloneqq  \) 所有的交换群。
+        \item \(\Hom_{\symsf{Ab}}(G,H)\coloneqq \) 所有 \(G\to H\) 的群同态。
+    \end{itemize}
+\end{defi}
+
+这样一个范畴会比普通的 \(\GRP\) 更为好看，一个特点是：
+\begin{proof}{\(\symsf{Ab}\)中群的余积也是群的直积}
+    考虑一下交换图：
+    \[
+        \begin{tikzcd}
+            {}                                     & Z                                     & {}                                         \\
+            {}                                     & {}                                    & {}                                         \\
+            {}                                     & G\times H\arrow[uu, "\exists !\psi "] & {}                                         \\
+            G\arrow[ru, "I_G"']\arrow[ruuu, "f_G"] & {}                                    & \arrow[lu, "I_H"]\arrow[luuu, "f_H"']    H \\
+        \end{tikzcd}
+    \]
+    其中 \(I_G,I_H\) 是嵌入映射 \(I_G: g\mapsto (g,0_H), I_H: h\mapsto (0_G,h)\)。则（由于图要交换）：
+    \[
+        \psi \left( (g,0_H) \right) = f_G(g) , \psi ((0_G,h)) = f_H(h)
+        .\]
+    另外 \(\psi \) 是一个群同态，因此有：
+    \[
+        \psi ((a,b)) = \psi ((a,0_H)+(0_G,b)) =\psi ((a,0_H))+\psi ((0_G,b)) = f_G(a)+f_H(b)
+        .\]
+    这是 \(\psi \)唯一的定义（若存在），接下来是要满足群同态的性质（上面那个只是特殊的）：
+    \[
+        \begin{aligned}
+            \psi ((a,b)+(c,d)) & = \psi ((a+c,b+d))= f_G(a+c) +f_H(b+d)                    \\
+                               & = f_G(a)+f_G(c)+f_H(b) +f_H(d)                            \\
+                               & \xlongequal{\text{交换群}}{} f_G(a)+f_H(b) +f_G(c)+f_H(d) \\
+                               & =\psi ((a,b)) +\psi ((c,d)).
+        \end{aligned}
+    \]
+    那的确是个群同态。
+\end{proof}
+
+\begin{itemize}
+    \item \textbf{\(\symbb{Q} \)不是任意两个非平凡群的直积。}
+
+          不妨设 \(G, H\) 是非平凡的，且 \(G \times H =\symbb{Q} \)，讨论群 \(G \times \left\{ 0_H \right\} \) 和 \(\left\{ 0_G \right\} \times H \)，显然这俩群非平凡。则讨论集合 \( G \times \left\{ 0_H \right\} \backslash \left\{ 0_{\symbb{Q} } \right\} \)，则必然非空，设 \(\frac{a}{b}\in G \times \left\{ 0_H \right\} \backslash \left\{ 0_{\symbb{Q} } \right\},a\neq 0\)，同理设 \(\frac{c}{d}\in \left\{ 0_G \right\} \times H\backslash\left\{ 0_{\symbb{Q} } \right\},c\neq 0  \)，故 \(ac = a d \cdot  \frac{c}{d}  = cb \cdot \frac{a}{b} \)，故（由于\(G \times \left\{ 0_H \right\},\left\{ 0_G \right\} \times H\)是群，因此 \(\frac{a}{b}, \frac{c}{d}\) 的倍数必然在对应的群里）\(ac\in G \times \left\{ 0_H \right\}\cap\left\{ 0_G \right\} \times H = \left\{ 0_H,0_G \right\} =0_{\symbb{Q} }\)，则 \(ac=0\) 矛盾！
+
+          因此 \(G \times \left\{ 0_H \right\} \) 和 \(\left\{ 0_G \right\} \times H \) 必然有一个是平凡的，故 \(G.H\) 有一个是平凡的。
+
+          \item\textbf{存在这样的例子：\(H\)非平凡，\(G \times H\cong G\)。}
+
+          一个著名的例子是：
+          \[
+              \symbb{Z} \times\symbb{Z} [x] \cong\symbb{Z} [x]
+              .\]
+          该群同态为 \((n,(a_0,a_1,\cdots))\mapsto (n,a_0,a_1,\cdots )\)。易验证是可逆的群同态。
+\end{itemize}
+
+
+
+
+
+
+\section{群同态们}
+
+\paragraph{一些例子}
+
+\begin{itemize}
+    \item 由于群同态只需满足保持运算，那么将群 \(G\) 所有的元素全部映射到 \(0_H\) 的群同态 \(\psi \) 必然存在。该群态可以分解为 \(G\) 到 \(\GRP\) 中的 Z 对象、再从该 Z 对象到 \(H\) 的群同态的复合。这种群同态被称为平方凡群同态。
+    \item 指数 (Exponential) 群同态：\(\epsilon_g:\symbb{Z} \to G, n \mapsto g^n\)，注意到如果这个群同态是全射，那么 \(G\) 中所有元素都可以用 \(g\) 的幂来表示，即 \(g\) 生成了 \(G\)。
+    \item 对待整数集，有一个投影商映射： {\(\pi _n :\symbb{Z} \to \symbb{Z} /n\symbb{Z},a\to [a]_n\)}，很显然这是全射，因为 \(a\to a[1]_n\)，而 \([1]_n\) 生成了整个 \(\symbb{Z} /n\symbb{Z} \)。
+\end{itemize}
+
+\paragraph{群同态与阶相关的例子}
+
+注意到 \(\psi \left( g^{|g|} \right) = \psi (0) = \psi \left( g \right)^{|g|} = 0  \)，故 \(\left\vert \psi (g) \right\vert \mid|g|\)。
+
+\paragraph{群同构}\mbox{}\par
+
+\begin{defi}{群同构}
+    群同构就是在 \(\GRP\) 范畴中的同构，也就是群同态 \(\psi \) 必须要有一个群同态的逆 \(\psi ^{-1} \)。
+\end{defi}
+
+\begin{proof}{一个群同态是群同构与该群同态是双的相互蕴含}
+    显然只有双射有逆，因此只需证明该逆是群同态：
+    \[
+        \psi ^{-1} (AB) = \psi^{-1}  \left( \psi (\psi ^{-1} (A)) \psi (\psi ^{-1} (B)) \right) =\psi^{-1}  \left( \psi (\psi ^{-1} (A)\psi ^{-1} (B)) \right) = \psi ^{-1} (A)\psi ^{-1} (B)
+        .\]
+\end{proof}
+
+因此指数函数 \(\exp :(\symbb{R} ,+)\to (\symbb{R} _{>0},\times  ) \)实际上是一个群同构。当然此时可以说 \((\symbb{R} ,+)\cong (\symbb{R} _{>0},\times  )\)。
+
+\begin{defi}{循环群}
+    一个群 \(G\) 是循环群若 \(\exists n\in\symbb{N}  \st G\cong C_n\)。
+\end{defi}
+
+群同构比普通的群同构保留了更多群的性质，比如阶、交换性等等：
+
+\begin{itemize}
+    \item 若 \(G\xrightarrow[f]{\sim} H\)，则 \((\forall g\in G) |g|=|f(g)|\)。
+    \item 若 \(G\) 交换， \(G\cong H\)，则 \(H\) 也交换。
+\end{itemize}
+
+\paragraph{交换群上的群同态}
+
+此时 \(f:G\to H\)，可以诱导出一个群若 \(H\) 是交换的，这个群是 \(\Hom_{\GRP}(G,H)\)：
+\[
+    (\psi +\phi)(z) \coloneqq \psi (z) + \phi (z)
+    .\]
+现在要满足一些性质：
+\begin{itemize}
+    \item 封闭性，即 \(\psi +\phi \) 也是群同态。：
+          \[
+              \begin{aligned}
+                  (\psi +\phi)(a+b) = \psi (a+b) + \phi (a+b) & = \psi (a)+\psi (b)+\phi(a) +\phi (b)                             \\
+                                                              & \xlongequal{\text{\tiny 交换}} \psi (a)+\phi(a)+\psi (b)+\phi (b) \\
+                                                              & = (\psi + \phi)(a) + (\psi + \phi)(b).
+              \end{aligned}
+          \]
+    \item 结合律、逆元、单位元自然取自 \(H\) 中的。因此整个群 \(\Hom_{\GRP}(G,H)\) 都由交换群 \(H\) 诱导（与 \(G\) 是否交换无关）。
+\end{itemize}
+
+\section{自由群 (Free groups)}
+
+\subsection{自由群的描述和泛性质}
+
+自由群是一个群以“特定的方式”包含了某个没有\textbf{任何结构的}集合 \(A\)。下面是一个例子：
+
+\[
+    \symscr{F} (\left\{ a \right\} )  \coloneqq \left\{ a^n : n \in\symbb{Z}  \right\} \cong\symbb{Z}
+    .\]
+
+故 \(\left\{ * \right\} \) 的自由群是一个无限循环群。而空集 \(\varnothing\) 的自由群则是任意的平凡群。
+
+\paragraph{自由群的泛性质}
+
+自由群是这样一个范畴 \(\symscr{F} ^A\) 中的 I 对象，这个范畴可以如下定义：
+
+\begin{defi}{\(\symscr{F} ^A\)  }
+    \begin{itemize}
+        \item \(\Obj\left( \symscr{F} ^A \right) \coloneqq  \left\{ j\in\Hom_{\SET}(A, G) : G\in \Obj(\GRP) \right\}  \),
+        \item \(\Hom_{\symscr{F} ^A}(j_1,j_2) \coloneqq \left\{ \sigma:\sigma j_1 =  j_2\land \sigma\in \Hom(\GRP)\right\} \).
+    \end{itemize}
+\end{defi}
+
+以下是一个对 \(\symscr{F} (\left\{ a \right\} )\) 同构与 \(\symbb{Z} \) 的验证：
+
+\begin{quote}{对 \(\symscr{F} (\left\{ a \right\} )\) 同构与 \(\symbb{Z} \) 的验证}
+    \[
+        \begin{tikzcd}
+            \symbb{Z}\arrow[r, "\exists !\psi "]             & G  \\
+            \left\{ a \right\}\arrow[u, "j"]\arrow[ur, "f"'] & {} \\
+        \end{tikzcd}
+    \]
+    \(a\) 必然是被映射到 \(\symbb{Z} \) 中的 `1'，代表着 \(a^1\)，而接下来，由于 \(\psi \) 是群同态，因此 \(n\in\symbb{Z} \) 会被映射到 \(f(a)^n\)。这样就决定了 \(\psi \) 的整个 Graph。
+\end{quote}
+
+\subsection{自由群的具体构造}
+
+由于集合 \(A\) 没有任何结构，我们不妨认为 \(A\) 中元素在自由群里的逆元不存在于 \(A\) 中（其实存在也无所谓）。以下将给出一个自由群的具体构造：
+
+\begin{defi}{自由群}
+    \begin{enumerate}
+        \item 给定一个新的集合 \(A^{-1} \stackrel{f}{\cong} A, f:a\mapsto a^{-1} \)，此时只是记号阶段，只有这些到了自由群里才会真正起到“逆”的作用。
+        \item 给出“字 (Word)”的定义：
+
+              \begin{defi}{字}
+                  我们可以将 \(W(A)\) 定义如下：
+                  \[
+                      W(A) \coloneqq \left\{ f\in\Hom_{\SET}(\left\{ 1,\cdots ,n \right\}  ,A) : n\in\symbb{N}  \right\}
+                      .\]
+                  其实就是用 \(A\) 中元素组合而成的有限字串。其中 \(n\) 被称为字串的长度，我们不妨用 \(L(w)\) 来表示字串 \(w\) 的长度。
+
+                  顺带一提的是，长度为 0 的字串也算，称为空字串。
+              \end{defi}
+        \item 字串里面有些特殊的存在，比如：
+              \[
+                  x y y^{-1} x\quad \mbox{\itshape 和}\quad  x^2
+                  .\]
+              在群里我们认为是相同的，我们可以将其商掉，但为了方便我们构造个函数来解决这一困扰：
+
+              构造“约化”函数 \(r : W(A)\to W(A)\)，它的作用是从左到右找到第一个 \(aa^{-1} \) 或者 \(a^{-1} a\) 的组合，然后将它删去。显然有以下两点：
+
+              \begin{itemize}
+                  \item 如果 \(r(w) = w\)，则我们认为这个字串已经被化简到最简了。
+                  \item \(r^{\left\lfloor L(w) / 2 \right\rfloor}(w)\)  必然是最简的，因为如果连续有效化简 \(\left\lfloor \frac{L(w)}{2} \right\rfloor\)  那么多次，则字串的长度会被减到小于零，矛盾。
+              \end{itemize}
+
+              那不妨定义 \( R:W(A)\to W(A),w\mapsto r^{\left\lfloor L(w)  /2 \right\rfloor }(w)\)。
+
+        \item 解下来我们认为将 \(W(A)\)中的元素全部 \(R\) 之后就可以得到自由群，即 \(\operatorname{im}R\)。定义自由群上的运算：
+              \[
+                  a\sim b \coloneqq R(ab)
+                  .\]
+              这里的 \(ab\) 指的是字符串接合。
+
+              \[
+                  ab : n\mapsto \begin{cases}
+                      a(n), & \text{if }n\leqslant L(a),             \\
+                      b(n), & \text{if }L(a)+L(b)\geqslant n > L(a).
+                  \end{cases}
+              \]
+              接下来是验证：
+              \begin{itemize}
+                  \item 结合律。这个是明显的，因为只需一次 \( R\)就可以化到最简。
+                  \item 幺元就是空字符串。
+                  \item 逆元就是将每一个元素都变成其“逆”然后再将字符串顺序颠倒。
+              \end{itemize}
+    \end{enumerate}
+
+    这样就给出了对任意一个集合 \(A\)，其自由群的定义。
+\end{defi}
+
+\begin{proof}{自由群的泛性质}
+    \[
+        \begin{tikzcd}
+            W (A)\arrow[r, "\exists !\psi "] & G  \\
+            A\arrow[u, "j"]\arrow[ur, "f"']  & {} \\
+        \end{tikzcd}
+    \]
+    不妨考虑 \(\symscr{F} (A)\) 的超集 \(W(A)\)，由于交换性，必然有：
+    \[
+        \psi j(a) = f(a) \implies \psi (j_a ) = f(a)
+        .\]
+    其中 \(j_a: 1\to a\)。同时，由于是群同态有
+    \[
+        \psi \left( \mathop{\mbox{\strut\huge$\sim$}}_{i=1}^n j_{a_i}\right) = \prod_{i=1}^n f(a_i)
+        .\]
+    而 \(W(A)\) 中的所有元素都可以用 \(\mathop{\mbox{\strut\huge$\sim$}}_{i=1}^n j_{a_i}\) 来表示，因此将 \(\psi\) 限制到 \(\symscr{F} (A)\) 上即可。
+\end{proof}
+
+\begin{center}
+    \begin{tikzpicture}
+        \pgfdeclarelindenmayersystem{cayley}{
+            \rule{F -> F [ R [F] [+F] [-F] ]}
+            \symbol{R}{
+                \pgflsystemstep=0.5\pgflsystemstep
+            }
+        }
+        \draw l-system [l-system={cayley, axiom=[F] [+F] [-F] [++F], step = 3cm, order = 5}];
+    \end{tikzpicture}
+
+    只可意会的二阶自由群 Cayley 图
+\end{center}
+
+\subsection{自由交换群 (Free abelian group)}
+
+自由交换群和自由群类似，只不过群变成了交换群：
+\[
+    \begin{tikzcd}
+        \symscr{F} ^{\text{ab}}(A)\arrow[r, "\psi "] & G  \\
+        A\arrow[u, "j"]\arrow[ur,"f"']               & {} \\
+    \end{tikzcd}
+\]
+考虑 \(\symbb{Z} \) 的 \(n\) 次直积（在交换的前提下记为直和） \(\symbb{Z} ^{\oplus n}\)，则面对元数数量为 \(n\) 的群 \(A\) 时，\(\symbb{Z} ^{\oplus n}\cong \symscr F^{\text{ab}}(A)\)。
+
+\begin{proof}{\(\symbb{Z} ^{\oplus |A|}\cong \symscr F^{\text{ab}}(A)\)}
+    \[
+        \begin{tikzcd}
+            \symbb{Z} ^{\oplus |A|}\arrow[r, "\psi "] & G  \\
+            A\arrow[u, "j"]\arrow[ur,"f"']            & {} \\
+        \end{tikzcd}
+    \]
+    \(j\) 定义为：
+    \[
+        j:a_i\mapsto (\underbrace{0,\cdots ,1}_i,\cdots ,0)
+        .\]
+    则我们可以仿照自由群那样让 \(j(a)\) 生成整个群（其实上也的确如此）：
+    \[
+        +_{ \symbb{Z} ^{\oplus |A|}}: ((m_1,\cdots ,m_n),(k_1,\cdots ,k_n))\mapsto (m_1+k_1,\cdots ,m_n+k_n)
+        .\]
+    因此：
+    \[
+        (m_1,\cdots ,m_n) = \sum_{1\leqslant i\leqslant n} m_ij(a_i)
+        .\]
+    由于图表的交换性，那么有：
+    \[
+        \psi \left(   (\underbrace{0,\cdots ,1}_i,\cdots ,0) \right)  = f(a_i)
+        .\]
+    和群同态的性质——
+    \[
+        \psi((m_1,\cdots ,m_n)) = \prod_{1\leqslant i\leqslant n} f(a_i)^{m_i}
+        .\]
+    最后验证这确实是个群同态：
+    \[
+        \begin{aligned}
+            \psi((m_1,\cdots ,m_n) + (k_1,\cdots ,k_n)) & = \psi ((m_1+k_1,\cdots ,m_n+k_n))                                                                                   \\
+                                                        & =\prod_{1\leqslant i\leqslant n} f(a_i)^{m_i+k_i}                                                                    \\
+                                                        & \xlongequal{\text{Abelian}}{} \prod_{1\leqslant i\leqslant n}f(a_i)^{m_i}\prod_{1\leqslant i\leqslant n}f(a_i)^{k_i} \\
+                                                        & = \psi((m_1,\cdots ,m_n))  \psi((k_1,\cdots ,k_n))
+        \end{aligned}
+    \]
+\end{proof}
+
+在此之上，我们定义针对集合的群直和：
+\begin{defi}{直和}
+    设 \(H\) 是一个交换群，\(A\) 是一个集合，则 \(\Hom_{\SET}(A,H) = H^A\) 是一个交换群。直和是 \(H^A\) 的子集，定义如下：
+    \[
+        H^{\oplus A} \coloneqq  \left\{ f\in H^A: \left\vert \left\{ a\in A:f(a)\neq 0_H \right\} \right\vert  <\infty \right\}
+        .\]
+\end{defi}
+
+这解决了不可数集合的自由群问题，如下：
+
+\begin{itemize}
+    \item 定义 \(J_a:A\to H^{\oplus A}, x\mapsto \begin{cases}
+              1, & \text{if } x=a,     \\
+              0, & \text{if } x\neq a.
+          \end{cases}\)则我们可以将 \( H^{\oplus A}\) 中的元素以下表示：
+          \[
+              \sum_{a\in A} m_aJ_a
+              .\]
+          则显然有 \(\psi :\sum_{a\in A} m_aJ_a\mapsto \sum_{a\in A} m_af(a)\)。
+
+          当然 \(m_a\) 只有有限个不为零。
+\end{itemize}
+\end{document}
