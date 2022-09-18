@@ -16,7 +16,7 @@
 \def\st{\text{ \underline{st} }}
 \catcode`\。 = 13
 \def。{．}
-\setlist[enumerate]{label*=\arabic*., leftmargin = 0pt}
+\setlist[enumerate]{label*=\arabic*., leftmargin = 5pt}
 \setlist[itemize]{leftmargin = 0pt}
 \everymath{\displaystyle}
 \begin{document}
@@ -25,7 +25,7 @@
 \setlength{\lineskiplimit}{2.5pt}
 \setlength{\parskip}{0.5em}
 
-\setlist[itemize,2]{label = \(\circ\)}
+\setlist[itemize,2]{label = \(\circ\) }
 \chapterstyle{toc}
 \thispagestyle{empty}
 
@@ -466,7 +466,7 @@
 因此指数函数 \(\exp :(\symbb{R} ,+)\to (\symbb{R} _{>0},\times  ) \)实际上是一个群同构。当然此时可以说 \((\symbb{R} ,+)\cong (\symbb{R} _{>0},\times  )\)。
 
 \begin{defi}{循环群}
-    一个群 \(G\) 是循环群若 \(\exists n\in\symbb{N}  \st G\cong C_n\)。
+    一个群 \(G\) 是循环群若 \(\exists n\in\symbb{N}  \st G\cong C_n\) 或 \(G\cong \symbb{Z} \)
 \end{defi}
 
 群同构比普通的群同构保留了更多群的性质，比如阶、交换性等等：
@@ -613,6 +613,7 @@
             }
         }
         \draw l-system [l-system={cayley, axiom=[F] [+F] [-F] [++F], step = 3cm, order = 5}];
+        \node [label = west:{\(x\)}] at (0, 6){};
     \end{tikzpicture}
 
     只可意会的二阶自由群 Cayley 图
@@ -689,4 +690,174 @@
 
           当然 \(m_a\) 只有有限个不为零。
 \end{itemize}
+
+
+\subsection{子群 (Subgroups)}
+
+\begin{defi}{子群}
+    群\((H, \bullet)\) 是 \(G\) 上的子群若存在一个单射的群同态：
+    \[
+        i: H↪ G
+        .\]
+\end{defi}
+
+另一个看待子群的方法是考虑 \(G\) 的子集：
+\begin{itemize}
+    \item \(H\) 是 \(G\) 的非空子集，则 \(H\) 是 \(G\) 的子群当且仅当：
+          \[
+              (\forall a,b\in H)a b^{-1} \in H
+              .\]
+          \begin{proof}{}
+              \begin{enumerate}
+                  \item (\(\impliedby \))  由于 \(H\) 非空，则 \(\exists h\in H\)，故有：
+                        \[
+                            e_G = h h^{-1} \in H
+                            .\]
+                        同时 \(\forall a\in H \implies ea^{-1} \in H\implies a^{-1} \in H\)，即 \(H\) 对逆运算封闭。
+
+                        \(\forall a,b\in H\implies ab=a(b^{-1} )^{-1} \in H\)，故 \(H\) 对群乘法封闭，剩下的结合律什么的继承自 \(G\) ，综上， \(H\) 是群。
+                  \item  (\(\implies \)) 显然。
+              \end{enumerate}
+          \end{proof}
+\end{itemize}
+
+\begin{quote}{一些关于子群的东西}
+    \begin{enumerate}
+        \item 若 \(\left\{ H_a \right\} _{a\in A}\) 书 \(G\) 上的子群族，则
+              \[
+                  H = \bigcap_{a\in A}H_a
+                  .\]
+              也是一个子群。
+
+              \begin{proof}{}
+                  \(g,h\in H\implies (\forall a\in A)g,h\in H_a \implies (\forall a\in A) gh^{-1} \in H_a\implies gh^{-1}\in H \)。
+              \end{proof}
+        \item 如果 \(\psi : G\to G'\) 是一个群同态， \(H\) 是 \(G'\) 中的子群，则
+              \[
+                  \psi ^{-1} (H)\coloneqq \left\{ g\in G: \psi (g)\in H \right\}
+                  .\]
+              也是一个子群。
+              \begin{proof}{}
+                  只需要证明 \(\forall a,b\in \psi ^{-1} (H)\) 都有 \(ab^{-1} \in \psi^{-1}  (H)\)，即 \(\psi (ab^{-1} )\in H\)。
+
+                  这是显然的，因为 \(\psi (ab^{-1} ) = \psi (a)\psi(b)^{-1} \in H\)，因为 \(H\) 是子群。
+              \end{proof}
+
+        \item 两个特殊的子群
+              设 \(\psi :G \to G'\) 是群同态，则 \(\operatorname{im} \psi ,\ker \psi \) 都是子群。
+              \begin{itemize}
+                  \item \(\ker \psi \coloneqq \psi ^{-1} (e_{G'})\)，由于 \(\left\{ e_{G'} \right\} \) 是一个子群，因此有上面的证明知晓 \(\ker \psi \) 是子群。
+                  \item \(\operatorname{im}\psi \)是子群，因为若 \(a,b\in \operatorname{im} \psi \implies \exists A,B\in G ,\psi (A)=a,\psi (B) = b\)，则 \(ab^{-1} =\psi (A)\psi (B)=\psi (AB^{-1} )\in \operatorname{im}\psi\)。
+                  \item \(\ker \psi \) 的泛性质：
+
+                        考虑这个范畴 \( \symsf C\)，则 \(\ker \psi \) 是 \(\symsf C\)的 F 对象：
+                        \begin{itemize}
+                            \item \(\Obj(\symsf C) = \left\{ (K,a)\mid a:K\to G\land \psi a = e_{K\to G'} \right\} \)。
+                            \item \(\Hom_{\symsf C} ((K_1,a_1),(K_2,a_2) )= \left\{ \sigma :a_2\sigma =a_1 \right\} \)。
+                        \end{itemize}
+
+                        \[
+                            \begin{tikzcd}
+                                K\arrow[rd, "\exists !f"]\arrow[r, "a"]\arrow[rr, "e_{K\to G'}", bend left = 30] & G\arrow[r, "\psi"]             & G' \\
+                                {}                                                                               & \ker \psi       \arrow[u, "i"] & {}
+                            \end{tikzcd}
+                        \]
+                        其中 \(i\) 是嵌入映射，将 \(\ker \psi \) 中的元素映射到 \(G\) 中的相同元素，又 \(\psi a = e_{K\to G'}\)，则 \(\operatorname{im}a\subset \ker \psi \)。则：
+                        \[
+                            if(x) = f(x)\implies f(x) = a(x),\forall x\in K
+                            .\]
+                        即 \(\psi \) 与 \(a\) 将 \(K\) 中的元素映射到分别属于 \(G\) 和 \(\ker\psi\) 的同一元素。
+              \end{itemize}
+        \item 由子集生成的子群
+              设 \(A\subset G\)，由自由群的泛性质：
+              \[
+                  \begin{tikzcd}
+                      \symscr{F} (A) \arrow[r, "\exists !\psi "] & G  \\
+                      A\arrow[u, "i"]\arrow[ur, "f"']            & {}
+                  \end{tikzcd}
+              \]
+              则 \(\operatorname{im}\psi \) 是子群，将这个群记为 \(\left<A \right>\)，或者 \(\left<\left\{ a_i \right\} _{a_i\in A} \right>\)。
+              \begin{itemize}
+                  \item \(\left<A \right>\) 是所有包含 \(A\) 的子群之交。
+                        \[
+                            \left<A \right> = \bigcap_{H\text{ is subgroup of }G,A\subset H} H
+                            .\]
+                        \begin{proof}{}
+                            显然， \(\left<A \right>\) 是包含 \(A\) 的子群，只需证明其最小即可。
+                            \[
+                                \begin{tikzcd}
+                                    \symscr{F} (A)\arrow[r, "\psi "] & \operatorname{im}\psi \arrow[d, "f"] \\
+                                    A\arrow[u, hook]\arrow[r, hook]  & H
+                                \end{tikzcd}
+                            \]
+                            只需证明 \(f\) 是单射即可，其中 \(\psi :\symscr{F} (A) \to \operatorname{im}\psi ,a_1\mathord{\sim}a_n\mapsto \prod_{i=1}^n a_i ,f\left( \prod_{i=1}^n a_i \right) =  \prod_{i=1}^n a_i \in H\)。
+                            由于 \(f\) 将 \(\prod_{i=1}^n a_i \in H\) 映为自身，故为单射。
+                        \end{proof}
+              \end{itemize}
+        \item 一些关于循环群的讨论
+
+              \begin{defi}{有限生成 (Finitely generate)}
+                  一个群 \(G\) 若是有限生成的，若存在一个\textbf{有限}子集 \(A\) 使得 \(G\cong \left<A \right>\)。换言之，由于 \(|A|\) 有限，则可以用：
+                  \[
+                      \symscr{F} (\left\{ 1,\cdots ,|A| \right\} )↠  G
+                      .\]
+                  这样一个全态射来判定。
+              \end{defi}
+              \begin{itemize}
+                  \item 对于循环群 \(\symbb{Z} \)，其子群必然是循环群，或者是平凡群。
+                        \begin{proof}{}
+                            若 \(G\) 是 \(\symbb{Z} \) 的子群，则必然非空，若 \(G\) 非平凡，则必然存在 \(g\in G\land d>0\)，设 \(a =\inf_{g\in G,g>0}g\)，则必然有 \(a\symbb{Z} \subset G\)，现在证明 \( G\subset a\symbb{Z} \)。
+
+                            设 \(h\in G\)，将 \(h\) 分解为：
+                            \[
+                                h = ka+b
+                                .\]
+                            其中 \(k\in\symbb{Z} ,b\in \left\{ 0,\cdots ,a-1 \right\} \)。又 \(a\in G\)，则 \(h-k\cdot a\in G\implies b\in G\)，若 \(b>0\) 则与 \(a\) 的 \(\inf\) 条件矛盾，故 \(b=0\)，因此 \(a\mid h\implies  G\subset a\symbb{Z} \)。
+                        \end{proof}
+                  \item 若 \(G\subset\) 是 \(\symbb{Z} / n\symbb{Z} \) 的一个子群，则 \(G\) 是由某个 \([d]_n\) 生成的循环群。
+                        \begin{proof}{}
+                            上面已经证明 \(\symbb{Z} \) 的子群都是循环群，考虑商映射 \(\pi _n\symbb{Z} \to \symbb{Z} /n\symbb{Z} \)这样一个群同态，由于 \(G\) 是子群，因此 \(\pi ^{-1} _n(G)\) 是 \(\symbb{Z} \) 的子群，即 \(\pi ^{-1} _n(G)\) 是循环群，则必然由某个 \(d\) 生成（包括 \(d=0\) ），因此：
+                            \[
+                                \begin{aligned}
+                                    G= \pi _n(G) & = \left\{ \pi _n(g): g\in G \right\} =\left\{ \pi _n(kd): d\in\symbb{Z}  \right\} \\
+                                                 & = \left\{ n[d]_n :n\in\symbb{Z}  \right\} =\left<[d]_n \right>.
+                                \end{aligned}
+                            \]
+                        \end{proof}
+              \end{itemize}
+        \item \(\GRP\) 中的单态射
+
+              \[
+                  \begin{tikzcd}
+                      {}                                        & \psi \text{ is a monic}\arrow[ld, "\symrm{A}"] & {}                                                \\
+                      \ker\psi = e_{G'}\arrow[rr, "\mathrm{B}"] & {}                                             & \psi \text{ is injective}\arrow[lu, "\symrm{C} "]
+                  \end{tikzcd}
+              \]
+              上面三者是等价的：
+              \begin{proof}{}
+                  \begin{enumerate}[label = \Alph*.]
+                      \item 不妨认为存在两个态射 \(i,e\)：
+                            \[
+                                \begin{tikzcd}
+                                    \ker\psi \arrow[r, "i", bend left = 40]\arrow[r, "e", bend left = -40] & G \arrow[r, "\psi "] & G'
+                                \end{tikzcd}
+                            \]
+                            其中 \(i\) 是恒等映射， \(e\) 是平凡群态射。则由单同态有：
+                            \[
+                                i,e\in \ker\psi\implies \psi i=\psi e \implies i=e
+                                .\]
+                            也就是 \(\ker\psi\) 中所有元素都是 \(e_G\)。
+                      \item 若 \(\ker \psi = e_G\)，则 \(\psi (g_1) = \psi (g_2)\implies \psi (g_1)\psi (g_2)^{-1} =e_G'\)，然后
+                            \[
+                                \psi (g_1g_2^{-1} ) = e_G' \implies g_1g_2^{-1} \in \ker \psi \implies g_1=g_2
+                                .\]
+                            即 \(\psi (g_1) = \psi (g_2)\implies  g_1=g_2\)，因此 \(\psi \) 是单的。
+                      \item 在 \(\SET\) 里面，单射必然是单态射，而 \(\GRP\) 是 \(\SET\) 的子范畴，证毕。
+                  \end{enumerate}
+              \end{proof}
+    \end{enumerate}
+\end{quote}
+
+
+
 \end{document}

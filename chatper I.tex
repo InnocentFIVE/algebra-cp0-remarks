@@ -322,17 +322,25 @@
     \item 一个类 \(\Obj(\symsf C)\)，包括了对象 (object)。
     \item 对任意两个对象 \(A,B\) 存在一个集合记为 \(\Hom_{\symsf C}(A,B)\) 包含了从 \(A\) 到 \(B\) 的全部态射 (morphisms)，态射和 \(\Hom\) 满足以下特点：
           \begin{itemize}
-              \item[\textbf{幺元的存在性}] \(\forall A\in \symsf C,\exists 1_A \in \Hom_{\symsf C}(A,A) \eqcolon \End_{\symsf C}(A)\)，称为 \(A\) 的 indentity。
-              \item[\textbf{态射复合的存在性}] 若 \(\exists f\in \Hom_{\symsf C}(A,B), g\in \Hom_{\symsf C}(A,B)\)，则存在 \(f,g\) 决定的态射 \(gf\in \Hom_{\symsf C}(A,C)\)，由于 \(\Hom\) 是集合，因此存在函数：
-                  \[
-                      \Hom_{\symsf C}(A,B) \times \Hom_{\symsf C}(B,C) \to \Hom_{\symsf C}(A,C)
-                      .\]
-              \item[\textbf{态射复合的结合性}] 若 \(f\in \Hom_{\symsf C}(A,B), g\in \Hom_{\symsf C}(B,C), h\in \Hom_{\symsf C}(C,D)\)，则
-                  \[
-                      (hg)f = h(gf)
-                      .\]
-                  这一性质导致态射图可交换。
-              \item [\textbf{幺元律}]\[
+              \item \textbf{幺元的存在性}
+
+                    \(\forall A\in \symsf C,\exists 1_A \in \Hom_{\symsf C}(A,A) \eqcolon \End_{\symsf C}(A)\)，称为 \(A\) 的 indentity。
+              \item \textbf{态射复合的存在性}
+
+                    若 \(\exists f\in \Hom_{\symsf C}(A,B), g\in \Hom_{\symsf C}(A,B)\)，则存在 \(f,g\) 决定的态射 \(gf\in \Hom_{\symsf C}(A,C)\)，由于 \(\Hom\) 是集合，因此存在函数：
+                    \[
+                        \Hom_{\symsf C}(A,B) \times \Hom_{\symsf C}(B,C) \to \Hom_{\symsf C}(A,C)
+                        .\]
+              \item \textbf{态射复合的结合性}
+
+                    若 \(f\in \Hom_{\symsf C}(A,B), g\in \Hom_{\symsf C}(B,C), h\in \Hom_{\symsf C}(C,D)\)，则
+                    \[
+                        (hg)f = h(gf)
+                        .\]
+                    这一性质导致态射图可交换。
+              \item \textbf{幺元律}
+
+                    \[
                         \forall f\in \Hom_{\symsf C}(A,B),f 1_A = 1_Bf=f
                         .\]
           \end{itemize}

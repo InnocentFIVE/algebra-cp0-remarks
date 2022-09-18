@@ -61,7 +61,7 @@
 
 \newenvironment{thoerem}[2]{\begin{theo}{#1}{}\trivlist\item #2}{\end{theo}}
 
-\newtcbtheorem[number within=section]{prof}{PROOF}{colback=ChapBlue!20,colframe=ChapBlue!150,fonttitle=\bfseries,arc=0mm,leftrule=0mm,toprule=0mm,bottomrule=1mm,rightrule=0mm,breakable}{prof}
+\newtcbtheorem[number within=section]{prof}{PROOF}{colback=ChapBlue!20,colframe=ChapBlue!150,fonttitle=\bfseries,arc=0mm,leftrule=0mm,toprule=0mm,bottomrule=1mm,rightrule=0mm,breakable,fontupper=\small}{prof}
 
 \newtcbtheorem[number within=section]{theo}{THEOREM}{enhanced,title=My title,
     attach boxed title to top center=
@@ -147,8 +147,8 @@
 \makeheadfootruleprefix{toc}{}{\color{ChapBlue}}
 
 \makepagestyle{fancy}
-\makeevenfoot{fancy}{\vskip-8em\hspace{-2.5em}\rotatebox[origin=l]{90}{{\LARGE\ebgaramond ☙}\enspace{\bfseries\Roman{page}}\enspace{\LARGE\ebgaramond ❧}}}{}{}
-\makeoddfoot{fancy}{}{}{\vskip-8ex\rotatebox[origin=r]{-90}{{\LARGE\ebgaramond ☙}\enspace{\bfseries\Roman{page}}\enspace{\LARGE\ebgaramond ❧}}\kern-2.5em}
+\makeevenfoot{fancy}{\vskip-18ex\hspace{-2.5em}\rotatebox[origin=c]{90}{{\LARGE\ebgaramond ☙}\enspace{\bfseries\Roman{page}}\enspace{\LARGE\ebgaramond ❧}}}{}{}
+\makeoddfoot{fancy}{}{}{\vskip-18ex\rotatebox[origin=c]{-90}{{\LARGE\ebgaramond ☙}\enspace{\bfseries\Roman{page}}\enspace{\LARGE\ebgaramond ❧}}\kern-2.5em}
 \makeevenhead{fancy}{}{\leftmark}{}
 \makeoddhead{fancy}{}{\rightmark}{}
 \makeheadrule{fancy}{\textwidth}{0.4pt}
